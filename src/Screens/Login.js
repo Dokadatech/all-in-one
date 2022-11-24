@@ -11,7 +11,7 @@ import { colors } from "../components/colors";
 import StyledInput from "../components/Inputs/StyledInput";
 import { Formik } from "formik";
 import MainBtn from "../components/Buttons/MainBtn";
-
+import Home from "./Home";
 import OutputMsg from "../components/Texts/OutputMsg";
 import AccountText from "../components/Texts/AccoutText";
 import axios from "axios";
@@ -94,7 +94,7 @@ const Login = ({ navigation }) => {
         console.log(token);
         return console.log(`User error here ${message}`);
       } else {
-        navigation.navigate("FakeHome");
+        navigation.navigate("Home");
         // console.log(`Login successfull ${message}`);
       }
       setSubmitting(false);
@@ -163,7 +163,7 @@ const Login = ({ navigation }) => {
                 />
                 <AccountText
                   style={{ right: -90 }}
-                  onPress={() => navigation.navigate("FakeHome")}
+                  onPress={() => navigation.navigate("Home")}
                 >
                   Forgot Password?
                 </AccountText>
