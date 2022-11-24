@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { ActivityIndicator } from "react-native";
-
 import { colors } from "../components/colors";
 const { primary, secondary, lightGray } = colors;
-
 // custom components
 import MainContainer from "../components/Containers/MainContainer";
 import KeyboardAvoidingContainer from "../components/Containers/KeyboardAvoidingContainer";
@@ -41,7 +39,7 @@ const EmailVerification = ({ navigation }) => {
   const buttonHandler = () => {
     if (modalMessageType === "success") {
       // do something
-      moveTo("Dashboard");
+      moveTo("Home");
     }
 
     setModalVisible(false);

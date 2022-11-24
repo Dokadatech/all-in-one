@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Dashboard = () => {
+const About = () => {
   return (
     <View>
-      <Text>All In One</Text>
+      <Text>About</Text>
     </View>
   );
 };
 
-export default Dashboard;
+export default About;
