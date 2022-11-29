@@ -14,7 +14,7 @@ function BottomTabNav() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: goldish,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         headerShown: false,
         tabBarIcon: ({ color, focused }) => {
           let iconName;
