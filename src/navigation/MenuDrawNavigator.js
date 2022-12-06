@@ -28,7 +28,11 @@ const MenuDrawNavigator = () => {
 
         headerTintColor: goldish,
         drawerPosition: "left",
-        headerStyle: { backgroundColor: primary },
+        headerStyle: {
+          backgroundColor: primary,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
         drawerStyle: {
           backgroundColor: white,
           width: 240,

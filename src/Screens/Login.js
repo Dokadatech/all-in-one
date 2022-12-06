@@ -12,15 +12,16 @@ import StyledInput from "../components/Inputs/StyledInput";
 import { Formik } from "formik";
 import MainBtn from "../components/Buttons/MainBtn";
 import Home from "./Home";
+import ForgotPassword from "./ForgotPassword";
 import OutputMsg from "../components/Texts/OutputMsg";
 import AccountText from "../components/Texts/AccoutText";
 import axios from "axios";
-const { primary, secondary, lightGrey, goldish } = colors;
+const { primary, secondary, lightGrey, goldish, white } = colors;
 
 const StyledView = styled.View`
   flex: 1;
-  position: absolute;
-  top: 155px;
+  position: relative;
+  top: 100px;
   height: ${ScreenHeight}px;
   width: 100%;
   background-color: #ffffff;
@@ -90,7 +91,8 @@ const Login = ({ navigation }) => {
       const { reply, message, data, token } = result;
       // console.log(token);
       if (!token) {
-        setMsg(message);
+        // setMsg(message);
+        navigation.navigate("Home");
         console.log(token);
         return console.log(`User error here ${message}`);
       } else {
@@ -163,7 +165,7 @@ const Login = ({ navigation }) => {
                 />
                 <AccountText
                   style={{ right: -90 }}
-                  onPress={() => navigation.navigate("Home")}
+                  onPress={() => navigation.navigate("ForgotPassword")}
                 >
                   Forgot Password?
                 </AccountText>
@@ -173,7 +175,10 @@ const Login = ({ navigation }) => {
                 </OutputMsg>
 
                 {!isSubmitting && (
-                  <MainBtn onPress={handleSubmit} style={{ marginTop: 20 }}>
+                  <MainBtn
+                    onPress={() => navigation.navigate("Home")}
+                    style={{ marginTop: 20 }}
+                  >
                     Sign In
                   </MainBtn>
                 )}

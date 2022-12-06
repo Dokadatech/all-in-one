@@ -14,8 +14,8 @@ import MainBtn from "../components/Buttons/MainBtn";
 import logo from "../components/images/lock_icon.svg";
 
 import OutputMsg from "../components/Texts/OutputMsg";
-import AccountText from "../components/Texts/AccoutText";
-const { primary, secondary, lightGrey, white } = colors;
+
+const { primary, white } = colors;
 
 const ImageView = styled.Image`
   width: 150px;
@@ -57,7 +57,7 @@ const ForgotPassword = ({ navigation }) => {
   return (
     <KeyboardAvoid>
       <MainContainer>
-        <ImageView source={logo} />
+        {/* <ImageView source={logo} /> */}
         <RegularText
           style={{ color: white, paddingTop: 20, textAlign: "center" }}
         >

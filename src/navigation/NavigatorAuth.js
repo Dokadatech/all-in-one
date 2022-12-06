@@ -15,7 +15,6 @@ const NavigatorAuth = () => {
           backgroundColor: primary,
           elevation: 0,
           shadowOpacity: 0,
-          borderBottomWidth: 0,
         },
       }}
       initialRouteName={{ Login }}

@@ -11,16 +11,16 @@ import { colors } from "../components/colors";
 import StyledInput from "../components/Inputs/StyledInput";
 import { Formik } from "formik";
 import MainBtn from "../components/Buttons/MainBtn";
-import SecondaryBtn from "../components/Buttons/SecondaryBtn";
+
 import OutputMsg from "../components/Texts/OutputMsg";
 import AccountText from "../components/Texts/AccoutText";
 import axios from "axios";
-import { Alert, View } from "react-native";
-const { primary, secondary, white, lightGrey } = colors;
+import { Alert } from "react-native";
+const { primary, secondary, lightGrey } = colors;
 
 const StyledView = styled.View`
   flex: 1;
-  position: absolute;
+  position: relative;
   height: ${ScreenHeight}px;
   width: 100%;
   background-color: #ffffff;
@@ -74,7 +74,7 @@ const Signup = ({ navigation }) => {
             style={{
               color: secondary,
               fontWeight: "bold",
-              marginTop: 115,
+              marginTop: 35,
               marginLeft: -220,
             }}
           >
@@ -187,7 +187,7 @@ const Signup = ({ navigation }) => {
                   style={{
                     textAlign: "center",
                     color: lightGrey,
-                    marginTop: 30,
+                    marginTop: 20,
                   }}
                 >
                   Already have an account?
