@@ -12,7 +12,16 @@ import IconM from "react-native-vector-icons/MaterialIcons";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const { primary, secondary, lightGrey, goldish, white } = colors;
+const {
+  primary,
+  secondary,
+  lightGrey,
+  goldish,
+  white,
+  secondary2,
+  darkGrey,
+  platinum,
+} = colors;
 const StyledView = styled.View`
   position: relative;
   height: ${ScreenHeight}px;
@@ -27,14 +36,44 @@ const Home = ({ navigation }) => {
   const [vacayDays, setVacayDays] = useState("10");
   const [ClockedIn, setClockedIn] = useState(false);
 
-  const annoucments = () => {
-    console.log("Annouments was pressed");
+  const createAlert = () =>
+    Alert.alert(
+      "Unable to clock in",
+      "Must be minimum of 100 meters of office location",
+      [
+        {
+          text: "Close",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ]
+    );
+
+  const cancelAlert = () =>
+    Alert.alert("Wait!", "Are you sure you want to concel this request", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      { text: "Yes", onPress: () => console.log("OK Pressed") },
+    ]);
+
+  const isInArea = () => {
+    const area = false;
+    if (!area) {
+      return createAlert();
+    } else {
+      console.log("Clocked in");
+    }
   };
 
   const requests = () => {
     console.log("requests was pressed");
   };
   const [modalVisible, setModalVisible] = useState(false);
+  const [requestModalVisible, setRequestModalVisible] = useState(false);
+
   return (
     <MainContainer style={{ flex: 0.5, backgroundColor: primary }}>
       <BigText
@@ -149,14 +188,17 @@ const Home = ({ navigation }) => {
             top: 120,
           }}
         >
-          <TouchableOpacity onPress={requests}>
-            <Card style={{ borderRadius: 30 }}>
+          <TouchableOpacity
+            onPress={() => {
+              setRequestModalVisible(true);
+            }}
+          >
+            <Card style={{ borderRadius: 30, width: 183 }}>
               <Card.Content>
                 <Icon name="md-paper-plane" size={48} color={goldish} />
                 <Title>Requests</Title>
                 <Paragraph>No request pending</Paragraph>
               </Card.Content>
-              {/* <Card.Cover source={{ uri: "https://picsum.photos/50" }} /> */}
             </Card>
           </TouchableOpacity>
 
@@ -167,35 +209,44 @@ const Home = ({ navigation }) => {
                 <Title>Announcements</Title>
                 <Paragraph>Company news</Paragraph>
               </Card.Content>
-              {/* <Card.Cover source={{ uri: "https://picsum.photos/50" }} /> */}
             </Card>
           </TouchableOpacity>
         </View>
-
-        <MainBtn
+        <View
           style={{
+            backgroundColor: "red",
             position: "relative",
-            top: 260,
-            height: 80,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            left: 12,
+            height: ScreenHeight,
+            marginTop: 50,
+            zIndex: -1,
+            borderRadius: 30,
+            backgroundColor: white,
           }}
         >
-          <BigText
+          <MainBtn
+            onPress={() => isInArea()}
             style={{
-              color: primary,
-              fontWeight: "bold",
-              fontSize: 40,
-              textAlign: "left",
+              position: "relative",
+              marginTop: 200,
+              height: 80,
+              display: "flex",
+              left: 12,
             }}
           >
-            {ClockedIn === true ? " Clock Out" : "Clock In"}
-          </BigText>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Icon name="md-time-outline" size={48} color={primary} />
-        </MainBtn>
+            <BigText
+              style={{
+                color: primary,
+                fontWeight: "bold",
+                fontSize: 40,
+                textAlign: "left",
+              }}
+            >
+              {ClockedIn === true ? "Clock Out" : "Clock In"}
+            </BigText>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Icon name="md-time-outline" size={48} color={primary} />
+          </MainBtn>
+        </View>
 
         <View style={styles.centeredView}>
           <Modal
@@ -209,12 +260,64 @@ const Home = ({ navigation }) => {
           >
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
-                <Text style={styles.modalText}>Annoucments!</Text>
+                <Card style={{ height: 300, width: "100%" }}>
+                  <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+                  <Card.Content
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Title>Card Announcements</Title>
+                    <Paragraph>Card content</Paragraph>
+                  </Card.Content>
+                </Card>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => setModalVisible(!modalVisible)}
                 >
                   <Text style={styles.textStyle}>close</Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+        </View>
+
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={requestModalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setRequestModalVisible(!requestModalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Card style={{ height: 300, width: "100%" }}>
+                  <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+                  <Card.Content
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Title>Card requests</Title>
+                    <Paragraph>Card content</Paragraph>
+                  </Card.Content>
+                </Card>
+
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => {
+                    setRequestModalVisible(!requestModalVisible);
+                    cancelAlert();
+                  }}
+                >
+                  <Text style={styles.textStyle}>Cancel Request</Text>
                 </Pressable>
               </View>
             </View>
@@ -230,16 +333,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
-    margin: 20,
+    margin: 10,
     backgroundColor: white,
     borderRadius: 20,
-    padding: 35,
+    padding: 10,
     alignItems: "center",
-    width: "90%",
+    width: "100%",
     height: "40%",
+    marginTop: 20,
   },
   button: {
     borderRadius: 20,
@@ -250,7 +353,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: goldish,
+    marginTop: 10,
   },
   textStyle: {
     color: "white",
@@ -258,7 +362,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
     textAlign: "center",
   },
 });

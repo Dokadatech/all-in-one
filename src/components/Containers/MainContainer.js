@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { statusBarHeight } from "../Shared";
 import { colors } from "../colors";
 
-const { primary, secondary, platinum } = colors;
+const { primary } = colors;
 
 const StyledView = styled.View`
   flex: 1;

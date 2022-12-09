@@ -15,6 +15,7 @@ function BottomTabNav() {
       screenOptions={({ route }) => ({
         tabBarActiveTintColor: goldish,
         tabBarShowLabel: true,
+
         headerShown: false,
         tabBarIcon: ({ color, focused }) => {
           let iconName;
