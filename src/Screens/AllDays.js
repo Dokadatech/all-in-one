@@ -1,10 +1,11 @@
 import { View, Text } from "react-native";
 import React from "react";
+import CarouselScreen from "./CarouselScreen";
 
-const AllDays = () => {
+const AllDays = ({ navigation }) => {
   return (
     <View>
-      <Text>AllDays</Text>
+      <CarouselScreen navigation={navigation} />
     </View>
   );
 };

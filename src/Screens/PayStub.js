@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import React, { useState } from "react";
 import RegularText from "../components/Texts/RegularText";
 import { colors } from "../components/colors";
@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 const { primary, goldish, black, secondary2 } = colors;
 
-const DATA = [
+const data = [
   {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     title: "Sept 01, 2022 - Sept 15, 2022",
@@ -46,28 +46,28 @@ const DATA = [
   },
 ];
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text onPress={() => console.log("pressed times")} style={styles.title}>
-      {title}
-    </Text>
+// const Item = ({ title, props }) => (
+//   <View style={styles.item}>
+//     <Pressable onPress={() => props.navigation.navigate("SinglePaySlip")}>
+//       <Text style={styles.title}>{title}</Text>
+//     </Pressable>
 
-    <Icon
-      onPress={() => console.log("pressed arrow")}
-      style={{
-        display: "flex",
-        position: "absolute",
-        right: 10,
-      }}
-      name="download-outline"
-      color={goldish}
-      size={24}
-    />
-  </View>
-);
+//     <Icon
+//       onPress={() => console.log("pressed arrow")}
+//       style={{
+//         display: "flex",
+//         position: "absolute",
+//         right: 10,
+//       }}
+//       name="download-outline"
+//       color={goldish}
+//       size={24}
+//     />
+//   </View>
+// );
 
-const PayStub = () => {
-  const renderItem = ({ item }) => <Item title={item.title} />;
+const PayStub = ({ navigation }) => {
+  // const renderItem = ({ item }) => <Item title={item.title} />;
 
   const [payStubDate, setPayStubDate] = useState(
     "Sept 01, 2022 - Sept 15, 2022"
@@ -138,10 +138,32 @@ const PayStub = () => {
 
       <View style={styles.container}>
         <FlatList
-          data={DATA}
+          data={data}
           // extraData={selectedId}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={(item) => {
+            return (
+              <View style={styles.item}>
+                <Pressable onPress={() => navigation.navigate("SinglePaySlip")}>
+                  <Text style={styles.title}>
+                    {item.id} jnonoijunoijnoojniybvuyvuyvuvu
+                  </Text>
+                </Pressable>
+
+                <Icon
+                  onPress={() => navigation.navigate("SinglePaySlip")}
+                  style={{
+                    display: "flex",
+                    position: "absolute",
+                    right: 10,
+                  }}
+                  name="download-outline"
+                  color={goldish}
+                  size={24}
+                />
+              </View>
+            );
+          }}
         />
       </View>
 

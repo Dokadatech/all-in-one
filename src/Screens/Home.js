@@ -1,5 +1,5 @@
 import { View, Alert, Modal, StyleSheet, Text, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import MainContainer from "../components/Containers/MainContainer";
 import styled from "styled-components/native";
 import SmallText from "../components/Texts/SmallText";
@@ -11,16 +11,14 @@ import Icon from "react-native-vector-icons/Ionicons";
 import IconM from "react-native-vector-icons/MaterialIcons";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { GlobalStates } from "../GlobalStates/GlobalContext";
 
 const {
   primary,
   secondary,
-  lightGrey,
+
   goldish,
   white,
-  secondary2,
-  darkGrey,
-  platinum,
 } = colors;
 const StyledView = styled.View`
   position: relative;
@@ -31,10 +29,19 @@ const StyledView = styled.View`
 `;
 
 const Home = ({ navigation }) => {
-  const [dates, setDates] = useState("Friday 2 Dec, 2022");
-  const [sickDays, setSickDays] = useState("05");
-  const [vacayDays, setVacayDays] = useState("10");
-  const [ClockedIn, setClockedIn] = useState(false);
+  const {
+    date,
+    setDate,
+    requests = 0,
+    setRequests,
+    announcements,
+    sickDays,
+    setSickDays,
+    vacayDays,
+    setVacayDays,
+    ClockedIn,
+    setClockedIn,
+  } = useContext(GlobalStates);
 
   const createAlert = () =>
     Alert.alert(
@@ -43,20 +50,27 @@ const Home = ({ navigation }) => {
       [
         {
           text: "Close",
-          onPress: () => console.log("Cancel Pressed"),
+          onPress: () => {
+            console.log("Cancel Pressed");
+          },
           style: "cancel",
         },
       ]
     );
 
   const cancelAlert = () =>
-    Alert.alert("Wait!", "Are you sure you want to concel this request", [
+    Alert.alert("Wait!", "Are you sure you want to cancel this request", [
       {
         text: "Cancel",
         onPress: () => console.log("Cancel Pressed"),
         style: "cancel",
       },
-      { text: "Yes", onPress: () => console.log("OK Pressed") },
+      {
+        text: "Yes",
+        onPress: () => {
+          console.log("OK Pressed"), setRequests(0);
+        },
+      },
     ]);
 
   const isInArea = () => {
@@ -68,9 +82,6 @@ const Home = ({ navigation }) => {
     }
   };
 
-  const requests = () => {
-    console.log("requests was pressed");
-  };
   const [modalVisible, setModalVisible] = useState(false);
   const [requestModalVisible, setRequestModalVisible] = useState(false);
 
@@ -96,7 +107,7 @@ const Home = ({ navigation }) => {
           left: 25,
         }}
       >
-        {dates}
+        {date}
       </SmallText>
       <StyledView>
         <View
@@ -154,28 +165,31 @@ const Home = ({ navigation }) => {
               Vacation days remaining
             </SmallText>
           </View>
-          <View style={{ width: 90, position: "relative" }}>
-            <BigText
-              style={{
-                color: secondary,
-                fontWeight: "bold",
+          <Pressable onPress={() => navigation.navigate("AllDays")}>
+            <View style={{ width: 90, position: "relative" }}>
+              <BigText
+                style={{
+                  color: secondary,
+                  fontWeight: "bold",
 
-                fontSize: 60,
-              }}
-            >
-              {">>"}
-            </BigText>
-            <SmallText
-              style={{
-                color: white,
-                top: 5,
-                position: "relative",
-                left: 5,
-              }}
-            >
-              View all days
-            </SmallText>
-          </View>
+                  fontSize: 60,
+                }}
+              >
+                {">>"}
+              </BigText>
+
+              <SmallText
+                style={{
+                  color: white,
+                  top: 5,
+                  position: "relative",
+                  left: 5,
+                }}
+              >
+                View all days
+              </SmallText>
+            </View>
+          </Pressable>
         </View>
 
         <View
@@ -197,7 +211,11 @@ const Home = ({ navigation }) => {
               <Card.Content>
                 <Icon name="md-paper-plane" size={48} color={goldish} />
                 <Title>Requests</Title>
-                <Paragraph>No request pending</Paragraph>
+                {requests < 1 ? (
+                  <Paragraph>No request pending</Paragraph>
+                ) : (
+                  <Paragraph> {requests} request pending</Paragraph>
+                )}
               </Card.Content>
             </Card>
           </TouchableOpacity>
@@ -214,7 +232,6 @@ const Home = ({ navigation }) => {
         </View>
         <View
           style={{
-            backgroundColor: "red",
             position: "relative",
             height: ScreenHeight,
             marginTop: 50,
@@ -224,7 +241,9 @@ const Home = ({ navigation }) => {
           }}
         >
           <MainBtn
-            onPress={() => isInArea()}
+            onPress={() => {
+              isInArea(), setRequests(requests + 1);
+            }}
             style={{
               position: "relative",
               marginTop: 200,
@@ -254,7 +273,6 @@ const Home = ({ navigation }) => {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
               setModalVisible(!modalVisible);
             }}
           >

@@ -165,7 +165,7 @@ const Login = ({ navigation }) => {
                 />
                 <AccountText
                   style={{ right: -90 }}
-                  onPress={() => navigation.navigate("ForgotPassword")}
+                  onPress={() => navigation.navigate("AdminDashboard")}
                 >
                   Forgot Password?
                 </AccountText>
