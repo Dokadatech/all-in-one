@@ -12,6 +12,7 @@ Be sure to use node version 16
 yarn 1.22.19
 
 ```bash
-  yarn install
   cd allinone
+  yarn install
+
 ```
