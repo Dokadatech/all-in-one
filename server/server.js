@@ -1,22 +1,18 @@
 require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
-const DB = process.env.MONGO_URI;
+// const bodyParser = require("body-parser");
+const mongoose = require("./db");
+// mongoose.set("strictQuery", false);
+// const DB = process.env.MONGO_URI;
+const cors = require("cors");
 const app = express();
-app.use(bodyParser.json());
+const routes = require("./routes/employees");
+
+app.use(express.json());
+app.use(cors({ origin: "http://localhost:4200" }));
 
 //connections
-mongoose
-  .connect(DB)
-  .then(() => {
-    console.log("connected to database");
-  })
-  .catch((e) => {
-    console.log("Error", e);
-  });
 
 // const storage = multer.diskStorage({
 //   destination(req, file, callback) {
@@ -41,8 +37,10 @@ mongoose
 //   });
 // });
 
-app.listen(process.env.PORT || 8080, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(
-    `server is running at http://localhost:${process.env.PORT || 8080}`
+    `server is running at http://localhost:${process.env.PORT || 3000}`
   );
 });
+
+app.use("/employees", routes);

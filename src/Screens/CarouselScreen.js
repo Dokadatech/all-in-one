@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Dimensions, SafeAreaView, Text, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import Animated, {
@@ -17,6 +17,8 @@ const { goldish, primary } = colors;
 
 const CarouselScreen = ({ navigation }) => {
   const width = Dimensions.get("window").width;
+  const { dayType, setDayType } = useState();
+  const data = ["vacation", "sick days", "grievence day"];
   return (
     <SafeAreaView>
       <View
@@ -32,9 +34,15 @@ const CarouselScreen = ({ navigation }) => {
           height={width / 1.2}
           autoPlay={false}
           data={[...new Array(4).keys()]}
-          // scrollAnimationDuration={1000}
-          onSnapToItem={(index) => console.log("current index:", index)}
-          renderItem={({ index }) => (
+          // scrollAnimationDuration={10}
+          onSnapToItem={(index, day) => {
+            index == 0 ? (day = "Vacation") : (day = "nothing");
+            index == 1 ? (day = "Sick days") : (day = "nothing");
+            index == 2 ? (day = "Grievence days") : (day = "nothing");
+
+            console.log("current index:", index, day);
+          }}
+          renderItem={({ index, day }) => (
             <View
               style={{
                 borderWidth: 3,
@@ -92,7 +100,7 @@ const CarouselScreen = ({ navigation }) => {
             textAlign: "left",
           }}
         >
-          Request
+          Create new request
         </BigText>
       </MainBtn>
       <Icon />

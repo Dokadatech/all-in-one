@@ -49,7 +49,19 @@ const userSchema = mongoose.Schema({
     type: String,
     default: "admin",
   },
-  isAdmin: { type: Boolean, default: true },
+  isAdmin: { type: Boolean, default: false },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  superAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  globalAdmin: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const User = mongoose.model("User", userSchema);

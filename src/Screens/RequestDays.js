@@ -21,6 +21,7 @@ import BigText from "../components/Texts/BigText";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import { GlobalStates } from "../GlobalStates/GlobalContext";
+import KeyboardAvoid from "../components/Containers/KeyboardAvoid";
 
 const { primary, white, goldish, secondary2, secondary, black } = colors;
 const RequestDays = () => {
@@ -97,202 +98,208 @@ const RequestDays = () => {
   ];
 
   return (
-    <SafeAreaView>
-      <View
-        style={{
-          backgroundColor: primary,
-          display: "flex",
-          height: 400,
-          borderBottomRightRadius: 40,
-          borderBottomLeftRadius: 40,
-        }}
-      >
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoid>
         <View
           style={{
-            width: "100%",
+            backgroundColor: primary,
             display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            position: "relative",
-            top: 60,
+            height: 400,
+            borderBottomRightRadius: 40,
+            borderBottomLeftRadius: 40,
           }}
         >
-          <Pressable onPress={showDatePicker}>
-            <Card style={{ borderRadius: 30, width: 190, elevation: 40 }}>
-              <Card.Content>
-                <Title>From:</Title>
-                <SmallText>{dayTo}</SmallText>
-              </Card.Content>
-            </Card>
-          </Pressable>
-          <Pressable onPress={showDatePicker}>
-            <Card style={{ borderRadius: 30, width: 190, elevation: 40 }}>
-              <Card.Content>
-                <Title>To:</Title>
-
-                <SmallText>{moment().format("MMMM Do, YYYY")}</SmallText>
-
-                {/* <CalendarPicker onDateChange={this.onDateChange} /> */}
-              </Card.Content>
-            </Card>
-          </Pressable>
-        </View>
-        <View
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            position: "relative",
-            top: 90,
-          }}
-        >
-          <RegularText
-            style={{
-              color: secondary,
-              fontWeight: "bold",
-
-              justifyContent: "center",
-            }}
-          >
-            You are requesting 9 {selectedDay} day(s) off
-          </RegularText>
-
           <View
             style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-evenly",
               position: "relative",
-              top: 50,
-              width: "85%",
-              // height: 50,
-              borderColor: secondary2,
-              borderWidth: 2,
-              backgroundColor: white,
-              marginHorizontal: 35,
-              borderRadius: 30,
+              top: 60,
             }}
           >
-            <PickerSelect
-              //     ? pickerSelectStyles.inputIOS
-              style={pickerSelectStyles}
-              onValueChange={setSelectedDay}
-              items={data}
-            />
+            <Pressable onPress={showDatePicker}>
+              <Card style={{ borderRadius: 30, width: 190, elevation: 40 }}>
+                <Card.Content>
+                  <Title>From:</Title>
+                  <SmallText>{dayTo}</SmallText>
+                </Card.Content>
+              </Card>
+            </Pressable>
+            <Pressable onPress={showDatePicker}>
+              <Card style={{ borderRadius: 30, width: 190, elevation: 40 }}>
+                <Card.Content>
+                  <Title>To:</Title>
+
+                  <SmallText>{dayFrom}</SmallText>
+
+                  {/* <CalendarPicker onDateChange={this.onDateChange} /> */}
+                </Card.Content>
+              </Card>
+            </Pressable>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              position: "relative",
+              top: 90,
+            }}
+          >
+            <RegularText
+              style={{
+                color: secondary,
+                fontWeight: "bold",
+
+                justifyContent: "center",
+              }}
+            >
+              You are requesting 9 {selectedDay} day(s) off
+            </RegularText>
+
+            <View
+              style={{
+                position: "relative",
+                top: 50,
+                width: "85%",
+                // height: 50,
+                borderColor: secondary2,
+                borderWidth: 2,
+                backgroundColor: white,
+                marginHorizontal: 35,
+                borderRadius: 30,
+              }}
+            >
+              <PickerSelect
+                //     ? pickerSelectStyles.inputIOS
+                style={pickerSelectStyles}
+                onValueChange={setSelectedDay}
+                items={data}
+              />
+            </View>
           </View>
         </View>
-      </View>
 
-      <View>
-        <TextInput
-          style={{
-            backgroundColor: white,
-            position: "relative",
-
-            height: 130,
-            borderRadius: 20,
-            width: "83%",
-            marginHorizontal: 35,
-            marginTop: -35,
-            textAlign: "justify",
-          }}
-          onChangeText={setReasonInput}
-          value={reasonInput}
-        />
-
-        <MainBtn
-          onPress={() => {
-            console.log("Submit");
-            //  navigation.navigate("RequestDays")
-          }}
-          style={{
-            height: 57,
-            position: "relative",
-            backgroundColor: goldish,
-            top: 100,
-          }}
-        >
-          <BigText
+        <View>
+          <TextInput
             style={{
-              color: primary,
-              fontWeight: "bold",
-              fontSize: 20,
-              textAlign: "left",
+              backgroundColor: white,
+              position: "relative",
+
+              height: 130,
+              borderRadius: 20,
+              width: "90%",
+              marginHorizontal: 35,
+              marginTop: -35,
+              textAlign: "justify",
+            }}
+            onChangeText={setReasonInput}
+            value={reasonInput}
+          />
+
+          <MainBtn
+            onPress={() => {
+              console.log("Submit");
+              //  navigation.navigate("RequestDays")
+            }}
+            style={{
+              height: 57,
+              position: "relative",
+              backgroundColor: goldish,
+              top: 100,
             }}
           >
-            Sumbit
-          </BigText>
-        </MainBtn>
-      </View>
-      {Platform.OS !== "ios" && show && renderPicker()}
-      {Platform.OS === "ios" && (
-        <TouchableHighlight activeOpacity={0} onPress={() => setShow(true)}>
-          <Modal
-            transparent={true}
-            animationType="slide"
-            visible={show}
-            supportedOrientations={["portrait"]}
-            onRequestClose={() => setShow(false)}
-          >
-            <TouchableHighlight
-              style={{ flex: 1, alignItems: "flex-end", flexDirection: "row" }}
-              activeOpacity={1}
+            <BigText
+              style={{
+                color: primary,
+                fontWeight: "bold",
+                fontSize: 20,
+                textAlign: "left",
+              }}
+            >
+              Sumbit
+            </BigText>
+          </MainBtn>
+        </View>
+        {Platform.OS !== "ios" && show && renderPicker()}
+        {Platform.OS === "ios" && (
+          <TouchableHighlight activeOpacity={0} onPress={() => setShow(true)}>
+            <Modal
+              transparent={true}
+              animationType="slide"
               visible={show}
+              supportedOrientations={["portrait"]}
+              onRequestClose={() => setShow(false)}
             >
               <TouchableHighlight
-                underlayColor={white}
-                style={{ flex: 1, borderColor: "#E9E9E9", borderTopWidth: 3 }}
-                onPress={() => console.log("date picker pressed")}
+                style={{
+                  flex: 1,
+                  alignItems: "flex-end",
+                  flexDirection: "row",
+                }}
+                activeOpacity={1}
+                visible={show}
               >
-                <View
-                  style={{
-                    backgroundColor: white,
-                    height: 256,
-                    overflow: "hidden",
-                  }}
+                <TouchableHighlight
+                  underlayColor={white}
+                  style={{ flex: 1, borderColor: "#E9E9E9", borderTopWidth: 3 }}
+                  onPress={() => console.log("date picker pressed")}
                 >
-                  <View style={{ marginTop: 20 }}>
-                    <DateTimePicker
-                      testID="dateTimePicker"
-                      value={new Date(date)}
-                      mode={mode}
-                      is24Hour={true}
-                      timeZoneOffsetInSeconds={0}
-                      onDateSelected={onDateSelected}
-                    />
-                  </View>
-                  <TouchableHighlight
-                    underlayColor="transparent"
-                    onPress={onCancel}
-                    style={[styles.btnText, styles.btnCancel]}
+                  <View
+                    style={{
+                      backgroundColor: white,
+                      height: 256,
+                      overflow: "hidden",
+                    }}
                   >
-                    <Text
-                      style={[
-                        styles.btnCancel,
-                        { fontSize: 15, fontWeight: "bold" },
-                      ]}
+                    <View style={{ marginTop: 20 }}>
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={new Date(date)}
+                        mode={mode}
+                        is24Hour={true}
+                        timeZoneOffsetInSeconds={0}
+                        onDateSelected={onDateSelected}
+                      />
+                    </View>
+                    <TouchableHighlight
+                      underlayColor="transparent"
+                      onPress={onCancel}
+                      style={[styles.btnText, styles.btnCancel]}
                     >
-                      Cancel
-                    </Text>
-                  </TouchableHighlight>
+                      <Text
+                        style={[
+                          styles.btnCancel,
+                          { fontSize: 15, fontWeight: "bold" },
+                        ]}
+                      >
+                        Cancel
+                      </Text>
+                    </TouchableHighlight>
 
-                  <TouchableHighlight
-                    underlayColor="transparent"
-                    onPress={onDone}
-                    style={[styles.btnText, styles.btnDone]}
-                  >
-                    <SmallText
-                      style={[
-                        styles.btnDone,
-                        { fontSize: 15, fontWeight: "bold" },
-                      ]}
+                    <TouchableHighlight
+                      underlayColor="transparent"
+                      onPress={onDone}
+                      style={[styles.btnText, styles.btnDone]}
                     >
-                      Done
-                    </SmallText>
-                  </TouchableHighlight>
-                </View>
+                      <SmallText
+                        style={[
+                          styles.btnDone,
+                          { fontSize: 15, fontWeight: "bold" },
+                        ]}
+                      >
+                        Done
+                      </SmallText>
+                    </TouchableHighlight>
+                  </View>
+                </TouchableHighlight>
               </TouchableHighlight>
-            </TouchableHighlight>
-          </Modal>
-        </TouchableHighlight>
-      )}
+            </Modal>
+          </TouchableHighlight>
+        )}
+      </KeyboardAvoid>
     </SafeAreaView>
   );
 };

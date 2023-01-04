@@ -40,9 +40,7 @@ const Signup = ({ navigation }) => {
       const response = await axios.post(url, credentials);
       const result = response.data;
       const { reply, data, message } = result;
-      // const moreData = response.config;
-      // const { email } = moreData;
-      // console.log(email);
+
       console.log(response);
       if (reply !== "SUCCESS") {
         setMsg("User already exists");
@@ -83,6 +81,10 @@ const Signup = ({ navigation }) => {
           <RegularText style={{ color: secondary, marginLeft: 35 }}>
             Sign up to continue!
           </RegularText>
+          {/* <RegularText style={{ color: secondary, marginLeft: 35 }}>
+            Important:
+            <RegularText></RegularText>
+          </RegularText> */}
 
           <Formik
             initialValues={{

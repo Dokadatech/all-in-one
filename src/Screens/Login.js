@@ -185,7 +185,7 @@ const Login = ({ navigation }) => {
 
                 {isSubmitting && (
                   <MainBtn
-                    onPress={() => navigation.navigate("Signup")}
+                    onPress={() => navigation.navigate("Contact")}
                     style={{ marginTop: 60 }}
                     disabled={true}
                   >
@@ -201,8 +201,8 @@ const Login = ({ navigation }) => {
                 >
                   Don't have an account?
                 </SmallText>
-                <AccountText onPress={() => navigation.navigate("Signup")}>
-                  Sign up
+                <AccountText onPress={() => navigation.navigate("Contact")}>
+                  Contact Us
                 </AccountText>
               </>
             )}

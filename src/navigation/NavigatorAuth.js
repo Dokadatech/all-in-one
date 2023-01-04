@@ -13,6 +13,7 @@ import CreateAnnouncement from "../Screens/CreateAnnouncement";
 import RequestAnswer from "../Screens/RequestAnswer";
 import CreateEmp from "../Screens/CreateEmp";
 import AllEmployees from "../Screens/AllEmployees";
+import Contact from "../Screens/Contact";
 const Stack = createStackNavigator();
 const { platinum, primary, white, black } = colors;
 
@@ -36,8 +37,8 @@ const NavigatorAuth = () => {
         }}
       />
       <Stack.Screen
-        name="Signup"
-        component={Signup}
+        name="Contact"
+        component={Contact}
         options={{
           title: "",
           headerTintColor: platinum,

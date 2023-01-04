@@ -9,8 +9,8 @@ const GlobalProvider = ({ children }) => {
   const [days, setDays] = useState();
   const [announcements, setAnnouncements] = useState(null);
   const [payRate, setPayRate] = useState(null);
-  const [dayTo, setDayTo] = useState(null);
-  const [dayFrom, setDayFrom] = useState();
+  const [dayTo, setDayTo] = useState(moment().format("MMMM Do, YYYY"));
+  const [dayFrom, setDayFrom] = useState(moment().format("MMMM Do, YYYY"));
   const [clockedInTime, setClockedInTime] = useState(null);
   const [clockedOutTime, setClockedOutTime] = useState(null);
   const [requests, setRequests] = useState();

@@ -30,7 +30,7 @@ const radioButtonsData = [
   },
 ];
 
-const Help = ({ navigation }) => {
+const Contact = ({ navigation }) => {
   const [msg, setMsg] = useState("");
   const [isSuccess, setSuccess] = useState(false);
 
@@ -44,13 +44,14 @@ const Help = ({ navigation }) => {
   };
   return (
     <KeyboardAvoid>
-      <MainContainer>
+      <MainContainer style={{ flex: 1, padding: 10 }}>
         <View
           style={{
             position: "relative",
             display: "flex",
             justifyContent: "center",
             width: "100%",
+            top: -60,
           }}
         >
           <BigText
@@ -58,17 +59,17 @@ const Help = ({ navigation }) => {
               fontWeight: "bold",
             }}
           >
-            Admin Contact
+            Contact Us
           </BigText>
           <SmallText
             style={{
               textAlign: "center",
               color: secondary2,
-              padding: 10,
+              padding: 15,
             }}
           >
-            Please enter your help request and your admin will contact you
-            shortly
+            Need to get intouch with us? Fill out the form below and we will get
+            back to you as soon as possible
           </SmallText>
         </View>
         <View
@@ -76,7 +77,7 @@ const Help = ({ navigation }) => {
             backgroundColor: white,
             flex: 1,
             position: "relative",
-            top: 80,
+            top: -45,
             borderRadius: 50,
           }}
         >
@@ -106,6 +107,15 @@ const Help = ({ navigation }) => {
             }) => (
               <>
                 <TextInput
+                  style={[styles.textInput, { marginTop: 40 }]}
+                  label="Company Name"
+                  placeholder="Company Name"
+                  keyboardType="default"
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
+                />
+                <TextInput
                   style={styles.textInput}
                   label="Email"
                   placeholder="Email"
@@ -123,9 +133,20 @@ const Help = ({ navigation }) => {
                   onBlur={handleBlur("phone")}
                   value={values.phone}
                 />
-
+                <View style={{ marginLeft: 20, marginTop: 10 }}>
+                  <RegularText style={{ marginBottom: 5 }}>
+                    Preffered method of communication
+                  </RegularText>
+                  <RadioGroup
+                    layout="row"
+                    radioButtons={radioButtons}
+                    onPress={radioButtonPressed}
+                    // color="red"
+                    // borderColor="#00FF00"
+                  />
+                </View>
                 <TextInput
-                  style={[styles.textInput, { height: 80, paddingTop: 55 }]}
+                  style={[styles.textInput, { height: 60, paddingTop: 35 }]}
                   label="message"
                   placeholder="Send a message"
                   keyboardType="default"
@@ -142,7 +163,7 @@ const Help = ({ navigation }) => {
                 {!isSubmitting && (
                   <MainBtn
                     onPress={() => navigation.navigate("Login")}
-                    style={{ marginTop: 50 }}
+                    style={{ marginTop: 25, display: "flex" }}
                   >
                     <RegularText
                       style={{
@@ -160,12 +181,25 @@ const Help = ({ navigation }) => {
                 {isSubmitting && (
                   <MainBtn
                     onPress={() => navigation.navigate("Login")}
-                    style={{ marginTop: 80 }}
+                    style={{ marginTop: 50 }}
                     disabled={true}
                   >
                     <ActivityIndicator size="small" color={primary} />
                   </MainBtn>
                 )}
+                <SmallText
+                  style={{
+                    textAlign: "center",
+                    color: lightGrey,
+                    marginTop: 35,
+                    // paddingBottom: 10,
+                  }}
+                >
+                  Already have an account?
+                </SmallText>
+                <AccountText onPress={() => navigation.navigate("Login")}>
+                  Sign in
+                </AccountText>
               </>
             )}
           </Formik>
@@ -185,4 +219,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Help;
+export default Contact;
