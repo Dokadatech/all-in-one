@@ -3,11 +3,14 @@ import React from "react";
 import RegularText from "../components/Texts/RegularText";
 import { colors } from "../components/colors";
 import SmallText from "../components/Texts/SmallText";
+import { ScrollView } from "react-native";
 
 const { primary, goldish, black, secondary2, lightGrey } = colors;
 
 const SinglePaySlip = ({ navigation }) => {
   return (
+
+
     <SafeAreaView>
       <View style={{ flex: 1, marginHorizontal: 15 }}>
         <RegularText
