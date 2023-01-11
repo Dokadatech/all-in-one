@@ -1,16 +1,196 @@
-import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import RegularText from "../components/Texts/RegularText";
 import { colors } from "../components/colors";
 import SmallText from "../components/Texts/SmallText";
-import { ScrollView } from "react-native";
+import RNHTMLtoPDF from "react-native-html-to-pdf";
+import { useState } from "react";
+import {printToFileAsync} from "expo-print";
+import { shareAsync } from "expo-sharing";
+
+
+const express=require("express");
+const app=express();
+const mongoose=require("mongoose");
+app.use(express.json);
+
+
+//DB Connection
+mongoose.connect("mongodb://localhost:")
 
 const { primary, goldish, black, secondary2, lightGrey } = colors;
 
-const SinglePaySlip = ({ navigation }) => {
+ const SinglePaySlip = ({ navigation }) => {
+  // const ExportPdf = () => {
+
+  // const createPdf = async () => {
+  //   let options = {
+  //     html: '<h1>Paystub Details<h1>', 
+  //     fileName: 'Paystub Details', 
+  //     directory: 'Downloads',
+  //   };
+    
+  //   let file = await RNHTMLtoPDF.convert(options);
+    
+  //   alert(file.filePath);
+  // };
+
+  const data = {
+    name: 'Orion Bethell',
+    address: 'New Providence, Nassau Bahamas',
+    phone: '242-356-5311',
+    company: 'Bethell Enterprises LTD',
+    amount: '356.00',
+    amt: '100.50',
+    rate: 'Pay Rate: 6.5',
+    payFrequency: 'Pay Frequency: Semi-Monthly',
+    description: 'Job: Security Officer'
+  }
+
+  var date = new Date().getDate();
+
+  const html = `
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <title>PayStub</title>
+    <title>Date: ${date} </title>
+    <link rel="license" href="https://www.opensource.org/licenses/mit-license/">
+    <style>
+      ${htmlStyles}
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>PayStub Details</h1>
+      <address>
+        <p>${'' + data.name}</p>
+        <p>${'' + data.address}</p>s
+        <p>${'' + data.phone}</p>
+        <p>${'' + data.rate}</p>
+        <p>${'' + data.payFrequency}</p>
+        <p>${'' + data.description}</p>
+      </address>
+    </header>
+    <article>
+      <h1>Recipient</h1>
+      <address>
+        <p>${data.company}<br>${data.name}</p>
+      </address>
+      <table class="meta">
+        <tr>
+          <th><span>Paystub #</span></th>
+          <td><span>101138</span></td>
+        </tr>
+        <tr>
+          <th><span>Date</span></th>
+          <td><span>${new Date()}</span></td>
+        </tr>
+        <tr>
+          <th><span>Amount Due</span></th>
+          <td><span id="prefix">$</span><span>${data.amount}</span></td>
+        </tr>
+      </table>
+      <table class="inventory">
+        <thead>
+          <tr>
+            <th><span>Earnings</span></th>
+            <th><span>Current</span></th>
+            <th><span>YTD</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span>Salary</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+          </tr>
+          <tr>
+            <td><span>Vacation</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+          </tr>
+          <tr>
+            <td><span>Bonus</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+          </tr>
+          <tr>
+            <td><span>Overtime</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+          </tr>
+          <tr>
+            <td><span>Allowance</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+          </tr>
+          <tr>
+            <td><span>Total Earnings</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <th><span>Taxes</span></th>
+            <th><span>Current</span></th>
+            <th><span>YTD</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span>Nat. Insurance</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span>VAT<span>${data.amt}</span></td>
+          </tr>
+          <tr>
+            <td><span>Emp. Insurance</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+          </tr>
+          <tr>
+            <td><span>VAT</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+            <td><span data-prefix>$</span><span>${data.amt}</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="balance">
+        <tr>
+          <th><span>Total Deductions</span></th>
+          <td><span data-prefix>$</span><span>${data.amt}</span></td>
+        </tr>
+        <tr>
+          <th><span>Amount Paid</span></th>
+          <td><span data-prefix>$</span><span>0.00</span></td>
+        </tr>
+      </table>
+    </article>
+    <aside>
+      <h1><span>Contact Info.</span></h1>
+      <div>
+        <p>Metro Security Solutions Company Limited</p>
+        <p>V.B. Munnings Building,</p>
+        <p>Horse Shoe Drive,</p>
+        <p>New Providence, Nassau Bahamas</p>
+        <p>242-356-5311</p>
+      </div>
+    </aside>
+  </body>
+</html>
+  `;
+
+  let generatePdf = async () => {
+    const file = await printToFileAsync({
+      html: html, 
+      base64: false
+    });
+
+    await shareAsync(file.uri);
+  };
+
   return (
-
-
     <SafeAreaView>
       <View style={{ flex: 1, marginHorizontal: 15 }}>
         <RegularText
@@ -19,12 +199,32 @@ const SinglePaySlip = ({ navigation }) => {
             position: "absolute",
             color: black,
             top: 40,
+            marginTop: -1,
             fontWeight: "bold",
-            fontSize: 25,
+            fontSize: 20,
           }}
         >
           Payslip details
         </RegularText>
+
+        <View style={{flex: 1, marginHorizontal: 25}}>
+        <TouchableOpacity onPress={() => generatePdf()}>
+          <RegularText
+          style={{
+            display: "flex",
+            position: "absolute",
+            color: black, 
+            top: 40, 
+            marginTop: -1,
+            marginLeft: 230,
+            fontWeight: "bold", 
+            fontSize: 20,
+          }}
+          >Convert
+          </RegularText>
+        </TouchableOpacity>
+        </View>
+        
 
         <View
           style={{
@@ -457,8 +657,10 @@ const SinglePaySlip = ({ navigation }) => {
         </View>
       </View>
     </SafeAreaView>
-  );
-};
+  )
+  }
+// };
+
 
 const styles = StyleSheet.create({
   userText: {
@@ -478,4 +680,72 @@ const styles = StyleSheet.create({
     marginRight: 2,
   },
 });
+
+const htmlStyles = `
+*{
+  border: 0;
+  box-sizing: content-box;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  vertical-align: top;
+}
+
+h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase; }
+/* table */
+table { font-size: 75%; table-layout: fixed; width: 100%; }
+table { border-collapse: separate; border-spacing: 2px; }
+th, td { border-width: 1px; padding: 0.5em; position: relative; text-align: left; }
+th, td { border-radius: 0.25em; border-style: solid; }
+th { background: #9FD8F5; border-color: #BBB; }
+td { border-color: #DDD; }
+/* page */
+html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; }
+html { background: #999; cursor: default; }
+body { box-sizing: border-box;margin: 0 auto; overflow: hidden; padding: 0.25in; }
+body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
+/* header */
+header { margin: 0 0 3em; }
+header:after { clear: both; content: ""; display: table; }
+header h1 { background: #FFF; border-radius: 0.25em; color: #1E9CE8; margin: 0 0 1em; padding: 0.5em 0; }
+header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
+header address p { margin: 0 0 0.25em; }
+header span, header img { display: block; float: right; }
+header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
+header img { max-height: 100%; max-width: 100%; }
+/* article */
+article, article address, table.meta, table.inventory { margin: 0 0 3em; }
+article:after { clear: both; content: ""; display: table; }
+article h1 { clip: rect(0 0 0 0); position: absolute; }
+article address { float: left; font-size: 125%; font-weight: bold; }
+/* table meta & balance */
+table.meta, table.balance { float: right; width: 36%; }
+table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+/* table meta */
+table.meta th { width: 40%; }
+table.meta td { width: 60%; }
+/* table items */
+table.inventory { clear: both; width: 100%; }
+table.inventory th { font-weight: bold; text-align: center; }
+table.inventory td:nth-child(1) { width: 26%; }
+table.inventory td:nth-child(2) { width: 38%; }
+table.inventory td:nth-child(3) { text-align: right; width: 12%; }
+table.inventory td:nth-child(4) { text-align: right; width: 12%; }
+table.inventory td:nth-child(5) { text-align: right; width: 12%; }
+/* table balance */
+table.balance th, table.balance td { width: 50%; }
+table.balance td { text-align: right; }
+/* aside */
+aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+aside h1 { border-color: #999; border-bottom-style: solid; }
+`;
+
 export default SinglePaySlip;
+
