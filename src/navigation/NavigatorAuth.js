@@ -94,7 +94,7 @@ const NavigatorAuth = () => {
         name="SinglePaySlip"
         component={SinglePaySlip}
         options={{
-          title: "All Payslip ",
+          title: "Payslip ",
           headerTintColor: white,
           headerTitleStyle: {
             fontWeight: "bold",

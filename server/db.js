@@ -1,7 +1,7 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
-const URI = process.env.MONGO_URI;
+const URI = process.env.MONGO_LOCAL_CONN_URL;
 
 mongoose
   .connect(URI)

@@ -11,22 +11,54 @@ import {
   TouchableHighlight,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import RegularText from "../components/Texts/RegularText";
 import BigText from "../components/Texts/BigText";
 import MainBtn from "../components/Buttons/MainBtn";
 import { colors } from "../components/colors";
 import Checkbox from "expo-checkbox";
 import KeyboardAvoid from "../components/Containers/KeyboardAvoid";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { GlobalStates } from "../GlobalStates/GlobalContext";
+
 const { primary, white, goldish, secondary2, secondary, black, lightGrey } =
   colors;
 
 const CreateEmp = () => {
   const [reasonInput, setReasonInput] = useState();
   const [isEnabled, setIsEnabled] = useState(false);
-
+  const { workLocation, setWorkLocation } = useContext(GlobalStates);
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ backgroundColor: primary, zIndex: 1 }}>
+        <GooglePlacesAutocomplete
+          styles={{
+            container: {
+              flex: 0,
+              position: "relative",
+              backgroundColor: primary,
+              marginHorizontal: 10,
+              top: 20,
+            },
+            textInput: { fontSize: 18 },
+          }}
+          minLength={2}
+          enablePoweredByContainer={false}
+          returnKeyType={"search"}
+          placeholder="Location"
+          nearbyPlacesAPI="GooglePlacesSearch"
+          debounce={400}
+          onPress={(data, details = null) => {
+            // 'details' is provided when fetchDetails = true
+            // console.log(data.place_id);
+            setWorkLocation(data.place_id);
+          }}
+          query={{
+            key: "AIzaSyDrt1sIUQyyTQ-Fb889zUsDzH2askT2rvQ",
+            language: "en",
+          }}
+        />
+      </View>
       <KeyboardAvoid>
         <View
           style={{
@@ -103,7 +135,7 @@ const CreateEmp = () => {
               backgroundColor: white,
               position: "relative",
               padding: 5,
-              height: 160,
+              height: 100,
               borderRadius: 20,
               marginHorizontal: 10,
               marginTop: -40,
@@ -112,31 +144,31 @@ const CreateEmp = () => {
             onChangeText={setReasonInput}
             value={reasonInput}
           />
-
-          <MainBtn
-            onPress={() => {
-              console.log("Submit");
-              //  navigation.navigate("RequestDays")
-            }}
+        </View>
+        <MainBtn
+          onPress={() => {
+            console.log("Submit");
+            //  navigation.navigate("RequestDays")
+          }}
+          style={{
+            height: 57,
+            position: "relative",
+            backgroundColor: goldish,
+            top: 60,
+            marginBottom: 180,
+          }}
+        >
+          <BigText
             style={{
-              height: 57,
-              position: "relative",
-              backgroundColor: goldish,
-              top: 100,
+              color: primary,
+              fontWeight: "bold",
+              fontSize: 20,
+              textAlign: "left",
             }}
           >
-            <BigText
-              style={{
-                color: primary,
-                fontWeight: "bold",
-                fontSize: 20,
-                textAlign: "left",
-              }}
-            >
-              Create User
-            </BigText>
-          </MainBtn>
-        </View>
+            Create User
+          </BigText>
+        </MainBtn>
       </KeyboardAvoid>
     </SafeAreaView>
   );

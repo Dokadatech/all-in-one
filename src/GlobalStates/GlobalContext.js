@@ -21,6 +21,7 @@ const GlobalProvider = ({ children }) => {
   const [sickDays, setSickDays] = useState("05");
   const [vacayDays, setVacayDays] = useState("10");
   const [ClockedIn, setClockedIn] = useState(false);
+  // const [location, setLocation] = useState(null)
   return (
     <GlobalStates.Provider
       value={{

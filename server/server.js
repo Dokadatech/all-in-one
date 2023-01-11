@@ -4,10 +4,11 @@ const multer = require("multer");
 // const bodyParser = require("body-parser");
 const mongoose = require("./db");
 // mongoose.set("strictQuery", false);
-// const DB = process.env.MONGO_URI;
+// const DB = process.env.MONGO_LOCAL_CONN_URL;
 const cors = require("cors");
 const app = express();
 const routes = require("./routes/employees");
+const passport = require("passport");
 
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:4200" }));
@@ -36,6 +37,14 @@ app.use(cors({ origin: "http://localhost:4200" }));
 //     message: "success!",
 //   });
 // });
+
+//=== 3 - INITIALIZE PASSPORT MIDDLEWARE
+app.use(passport.initialize());
+require("./middlewares/tokenStrat")(passport);
+
+//=== 4 - CONFIGURE ROUTES
+//Configure Route
+require("./routes/index")(app);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(
