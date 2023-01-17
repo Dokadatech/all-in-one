@@ -1,55 +1,22 @@
 require("dotenv").config();
 const express = require("express");
-const multer = require("multer");
-// const bodyParser = require("body-parser");
-const mongoose = require("./db");
-// mongoose.set("strictQuery", false);
-// const DB = process.env.MONGO_LOCAL_CONN_URL;
+const mongoose = require("./config/db");
 const cors = require("cors");
 const app = express();
 const routes = require("./routes/employees");
-const passport = require("passport");
+const { PORT } = process.env;
 
-app.use(express.json());
+app.use(express.json({ extended: false }));
 app.use(cors({ origin: "http://localhost:4200" }));
 
-//connections
+//route connections
+app.use("/api/users", require("./routes/users"));
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/employees", require("./routes/employees"));
+app.use("/api/notifications", require("./routes/notifications"));
 
-// const storage = multer.diskStorage({
-//   destination(req, file, callback) {
-//     callback(null, "./images");
-//   },
-//   filename(req, file, callback) {
-//     callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
-//   },
-// });
-
-// const upload = multer({ storage });
-
-// app.get("/", (req, res) => {
-//   res.status(200).send("You can post to /api/upload.");
-// });
-
-// app.post("/api/upload", upload.array("photo", 3), (req, res) => {
-//   console.log("file", req.files);
-//   console.log("body", req.body);
-//   res.status(200).json({
-//     message: "success!",
-//   });
-// });
-
-//=== 3 - INITIALIZE PASSPORT MIDDLEWARE
-app.use(passport.initialize());
-require("./middlewares/tokenStrat")(passport);
-
-//=== 4 - CONFIGURE ROUTES
-//Configure Route
-require("./routes/index")(app);
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log(
-    `server is running at http://localhost:${process.env.PORT || 3000}`
-  );
+app.listen(PORT || 3000, () => {
+  console.log(`server is running at http://localhost:${PORT || 3000}`);
 });
 
 app.use("/employees", routes);

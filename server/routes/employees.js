@@ -1,13 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const ObjectId = require("mongoose").Types.ObjectId;
-const Employee = require("../models/employee");
+const Employee = require("../models/Employee");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { body, validationResult } = require("express-validator");
+const { JWT_SECRET } = process.env;
+const auth = require("../middlewares/authenticate");
+const { isAdmin } = require("../middlewares/authAdmin");
 
 /**
  * This routes gets all employees
- *
+ *private routes
  * */
-
 router.get("/", (req, res) => {
   try {
     Employee.find((err, doc) => {
@@ -15,8 +20,8 @@ router.get("/", (req, res) => {
         res.send("error getting users from database");
         console.log("error getting users from database");
       } else {
-        res.send(doc);
         console.log("users found in database database");
+        res.send("All employees");
       }
     });
   } catch (error) {
@@ -54,60 +59,102 @@ router.get("/:id", (req, res) => {
 
 /**
  * This routes creats a new employee
+ *Todo add only admin protection here
  *
- * */
-router.post("/create", (req, res) => {
+ */
+router.post("/create", isAdmin, async (req, res) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    contactNumber,
+    position,
+    department,
+    payrate,
+    sickDays,
+    vacationDays,
+    grievenceDays,
+    hoursWorks,
+    gender,
+    isAdmin,
+  } = req.body;
   try {
-    let newEmployee = new Employee({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      password: req.body.password,
-      cellPhone: req.body.cellPhone,
-      position: req.body.position,
-      department: req.body.department,
-      payrate: req.body.payrate,
-      sickDays: req.body.sickDays,
-      vacationDays: req.body.vacationDays,
-      grievenceDays: req.body.grievenceDays,
-      hoursWorks: req.body.hoursWorks,
+    let newEmployee = await Employee.findOne({ email });
+
+    if (newEmployee) {
+      return res.status(400).json({ message: "Employee already exists" });
+    }
+    newEmployee = Employee({
+      firstName,
+      lastName,
+      email,
+      password,
+      contactNumber,
+      position,
+      department,
+      payrate,
+      sickDays,
+      vacationDays,
+      grievenceDays,
+      hoursWorks,
+      gender,
+      isAdmin,
     });
 
-    newEmployee.save((err, doc) => {
-      if (err) {
-        res.send("error saving user to database");
-        console.log("error saving user to database");
-      } else {
-        res.send(doc);
-        console.log("user saved to database");
+    const salt = await bcrypt.genSalt(12);
+    newEmployee.password = await bcrypt.hash(password, salt);
+
+    await newEmployee.save();
+
+    const payload = {
+      newEmployee: {
+        id: newEmployee.id,
+        isAdmin: newEmployee.isAdmin,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      JWT_SECRET,
+      // isAdmin,
+
+      {
+        //TODO change this time to 3600 in production
+        expiresIn: 360000,
+      },
+      (error, token) => {
+        if (error) throw error;
+        res.json({ token });
       }
-    });
+    );
   } catch (error) {
     res.send("error saving user to database");
+    console.error(error.message);
     console.log("error saving user to database");
   }
 });
 
 /**
- * This routes get a single employee by id and updates the employee
- *
+ * This route gets a single employee by id and updates the employee
+ *Todo add only admin protection here
  * */
 router.put("/:id", (req, res) => {
   try {
     if (ObjectId.isValid(req.params.id)) {
       let updateEmployee = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        password: req.body.password,
-        cellPhone: req.body.cellPhone,
-        position: req.body.position,
-        department: req.body.department,
-        payrate: req.body.payrate,
-        sickDays: req.body.sickDays,
-        vacationDays: req.body.vacationDays,
-        grievenceDays: req.body.grievenceDays,
-        hoursWorks: req.body.hoursWorks,
+        firstName,
+        lastName,
+        email,
+        password,
+        contactNumber,
+        position,
+        department,
+        payrate,
+        sickDays,
+        vacationDays,
+        grievenceDays,
+        hoursWorks,
       };
       Employee.findByIdAndUpdate(
         req.params.id,
@@ -136,8 +183,8 @@ router.put("/:id", (req, res) => {
 });
 
 /**
- * This routes get a single employee by id amnd deletes the employee
- *
+ * This routes get a single employee by id and deletes the employee
+ *Todo add only admin protection here
  * */
 router.delete("/:id", (req, res) => {
   if (ObjectId.isValid(req.params.id)) {

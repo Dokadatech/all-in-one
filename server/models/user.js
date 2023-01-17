@@ -1,16 +1,25 @@
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
+/**
+ * This schema will be used in phase 2 of the app where other organizations will be able to join
+ *
+ */
+
 const UserSchema = mongoose.Schema({
+  CompanyName: {
+    type: String,
+    required: "The name of your organization is required",
+  },
   firstName: {
     type: String,
-    unique: true,
-    required: "Your username is required",
+
+    // required: "Your username is required",
   },
   lastName: {
     type: String,
-    unique: true,
-    required: "Your username is required",
+
+    // required: "Your username is required",
   },
   email: {
     type: String,
@@ -37,16 +46,14 @@ const UserSchema = mongoose.Schema({
   },
   address: {
     type: String,
-    default: "New Providence, Nassau, Bahamas",
   },
   jobDescription: {
     type: String,
-
     max: 255,
   },
   type: {
     type: String,
-    default: "RegularUser",
+    default: "superAdmin",
   },
   isAdmin: { type: Boolean, default: false },
   date: {

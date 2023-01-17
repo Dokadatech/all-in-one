@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dimensions, SafeAreaView, Text, View } from "react-native";
+import { Dimensions, SafeAreaView, Text, View, FlatList } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import Animated, {
   Extrapolate,
@@ -12,7 +12,8 @@ import MainBtn from "../components/Buttons/MainBtn";
 import { colors } from "../components/colors";
 import BigText from "../components/Texts/BigText";
 import RegularText from "../components/Texts/RegularText";
-
+import { SvgXml } from "react-native-svg";
+import Vacation from "../../assets/vacationimg.svg";
 const { goldish, primary } = colors;
 
 const CarouselScreen = ({ navigation }) => {
@@ -42,17 +43,16 @@ const CarouselScreen = ({ navigation }) => {
 
             console.log("current index:", index, day);
           }}
-          renderItem={({ index, day }) => (
+          renderItem={({}) => (
             <View
               style={{
                 borderWidth: 3,
                 justifyContent: "center",
               }}
-            >
-              <Text style={{ textAlign: "center", fontSize: 30 }}>{index}</Text>
-            </View>
+            ></View>
           )}
         />
+        {/* <Vacation width={200} height={200} /> */}
 
         <BigText
           style={{
@@ -103,7 +103,7 @@ const CarouselScreen = ({ navigation }) => {
           Create new request
         </BigText>
       </MainBtn>
-      <Icon />
+      {/* <Vacation width={"100"} height={100} /> */}
     </SafeAreaView>
   );
 };

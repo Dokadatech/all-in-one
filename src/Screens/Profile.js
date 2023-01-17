@@ -8,6 +8,7 @@ import RegularText from "../components/Texts/RegularText";
 import { colors } from "../components/colors";
 import SmallText from "../components/Texts/SmallText";
 import UserAvatar from "react-native-user-avatar";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const { primary, secondary, secondary2, lightGrey, goldish, white, black } =
   colors;
@@ -21,16 +22,16 @@ const Profiles = () => {
           padding: 10,
           width: "100%",
           backgroundColor: primary,
-          height: 150,
+          height: 180,
         }}
       ></View>
       <View style={{ alignItems: "center" }}>
         <UserAvatar
-          size={100}
+          size={180}
           name="Orion Bethell"
           style={{
-            width: 140,
-            height: 140,
+            width: 200,
+            height: 200,
             borderRadius: 100,
             marginTop: -70,
             backgroundColor: goldish,
@@ -57,194 +58,59 @@ const Profiles = () => {
           // shadowOpacity: 20,
           elevation: 5,
           marginTop: 20,
-          // height: "50%",
+          height: "80%",
         }}
       >
-        <View style={{ margin: 20 }}>
-          <Image
-            source={require("../../assets/person.png")}
-            style={{ width: 25, height: 25 }}
-          ></Image>
+        <View style={{ margin: 20, display: "flex", flexDirection: "row" }}>
+          <Icon name="person-circle-sharp" size={20} color={secondary} />
           <Text
             style={{
               fontSize: 15,
               color: primary,
               fontWeight: "bold",
-              marginLeft: 10,
+              marginLeft: 5,
             }}
           >
             Orion Bethell
           </Text>
         </View>
 
-        {/* </View>
-      <View
-        style={{
-          alignSelf: "center",
-          flexDirection: "row",
-          justifyContent: "center",
-          backgroundColor: "#fff",
-          width: "98%",
-          padding: 20,
-          paddingBottom: 22,
-          borderRadius: 10,
-          shadowOpacity: 80,
-          elevation: 15,
-          marginTop: 20,
-        }}
-      > */}
-        <View style={{ margin: 20, justifyContent: "center" }}>
-          <Image
-            source={require("../../assets/location.png")}
-            style={{ width: 20, height: 20 }}
-          ></Image>
+        <View
+          style={{
+            margin: 20,
+            justifyContent: "center",
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <Icon name="location" size={20} color={secondary} />
+
           <Text
             style={{
               fontSize: 15,
               color: primary,
               fontWeight: "bold",
-              marginLeft: 10,
+              marginLeft: 5,
             }}
           >
             New Providence, Nassau Bahamas
           </Text>
         </View>
-        {/* </View>
-      <View
-        style={{
-          alignSelf: "center",
-          flexDirection: "row",
-          justifyContent: "center",
-          backgroundColor: "#fff",
-          width: "98%",
-          padding: 20,
-          paddingBottom: 22,
-          borderRadius: 10,
-          shadowOpacity: 80,
-          elevation: 15,
-          marginTop: 20,
-        }}
-      > */}
-        <View style={{ margin: 20 }}>
-          <Image
-            source={require("../../assets/briefcase.png")}
-            style={{ width: 20, height: 20 }}
-          ></Image>
+
+        <View style={{ margin: 20, display: "flex", flexDirection: "row" }}>
+          <Icon name="briefcase-sharp" size={20} color={secondary} />
           <Text
             style={{
               fontSize: 15,
               color: primary,
               fontWeight: "bold",
-              marginLeft: 10,
+              marginLeft: 5,
             }}
           >
             Product Designer
           </Text>
         </View>
       </View>
-      {/* <TouchableOpacity
-        style={{
-          alignSelf: "center",
-          flexDirection: "row",
-          justifyContent: "center",
-          backgroundColor: "#fff",
-          width: "98%",
-          padding: 20,
-          paddingBottom: 22,
-          borderRadius: 10,
-          shadowOpacity: 80,
-          elevation: 15,
-          marginTop: 20,
-          marginBottom: 40,
-          backgroundColor: "#000",
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 15,
-            color: "#fff",
-            fontWeight: "bold",
-            marginLeft: 10,
-          }}
-        >
-          Logout
-        </Text>
-      </TouchableOpacity> */}
-
-      {/* <View
-        style={{
-          display: "flex",
-          position: "absolute",
-          width: ScreenWidth,
-        }}
-      >
-        <View
-          style={{
-            flex: 0.5,
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-          }}
-        >
-          <Card
-            style={{
-              display: "flex",
-              width: ScreenWidth,
-              position: "relative",
-            }}
-          >
-            <RegularText
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexWrap: "wrap",
-                // position: "absolute",
-                color: black,
-                // top: 80,
-                fontWeight: "bold",
-                // fontSize: 25,
-              }}
-            >
-              {jobTitle} at Bethell's Enterprise LTD
-            </RegularText>
-            <RegularText
-              style={{
-                textAlign: "center",
-                display: "flex",
-                flexWrap: "wrap",
-                // position: "absolute",
-                color: black,
-                // top: 80,
-                fontWeight: "bold",
-                // fontSize: 25,
-              }}
-            >
-              Nassau, Bahamas
-            </RegularText>
-            <Card.Content>
-              <Paragraph
-                style={{
-                  textAlign: "center",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <RegularText
-                  style={{
-                    fontWeight: "bold",
-                    color: "black",
-                  }}
-                >
-                  Job Description:{" "}
-                </RegularText>
-                Lorem ipsum dolor sit amet. Sed repellendus quisquam in dolorem
-                t corrupti voluptate ex nisi natus At sapiente error aut iusto
-                quos ut optio consequ
-              </Paragraph>
-            </Card.Content>
-          </Card>
-        </View>
-      </View> */}
     </ScrollView>
   );
 };
