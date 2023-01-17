@@ -13,10 +13,10 @@ import { Card, Title, Paragraph } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { GlobalStates } from "../GlobalStates/GlobalContext";
 
+
 const {
   primary,
   secondary,
-
   goldish,
   white,
 } = colors;
@@ -26,7 +26,17 @@ const StyledView = styled.View`
   width: 100%;
   background-color: ${primary};
   border-radius: 55px;
+  marginTop: 20%;
 `;
+
+
+
+let today = new Date();
+today.setDate(today.getDate() + 12);
+let payDay = new Date(today).toLocaleDateString("en-US" , {month: "long", day: "2-digit"}) + ("th ") + ("is your next Pay Day!");
+
+
+
 
 const Home = ({ navigation }) => {
   const {
@@ -109,6 +119,25 @@ const Home = ({ navigation }) => {
       >
         {date}
       </SmallText>
+      <View
+        style={{
+          color: primary,
+          top: 80,
+          position: "absolute",
+          left: 25,
+          borderColor: primary,
+        }}>
+        <SmallText
+          style={{
+            color: secondary,
+            top: -5,
+            marginLeft: -26,
+            position: "absolute",
+            left: 25,
+          }}>
+          {payDay}
+        </SmallText>
+      </View>
       <StyledView>
         <View
           style={{
@@ -116,7 +145,7 @@ const Home = ({ navigation }) => {
             flexDirection: "row",
             justifyContent: "space-around",
             position: "relative",
-            top: 70,
+            top: 80,
           }}
         >
           <View style={{ width: 90, position: "relative" }}>
@@ -124,7 +153,7 @@ const Home = ({ navigation }) => {
               style={{
                 color: secondary,
                 fontWeight: "bold",
-                fontSize: 60,
+                fontSize: 55,
               }}
             >
               {sickDays}
@@ -147,8 +176,7 @@ const Home = ({ navigation }) => {
               style={{
                 color: secondary,
                 fontWeight: "bold",
-
-                fontSize: 60,
+                fontSize: 55,
                 letterSpacing: 1,
               }}
             >
@@ -171,8 +199,7 @@ const Home = ({ navigation }) => {
                 style={{
                   color: secondary,
                   fontWeight: "bold",
-
-                  fontSize: 60,
+                  fontSize: 55,
                 }}
               >
                 {">>"}

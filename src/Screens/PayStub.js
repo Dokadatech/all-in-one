@@ -5,6 +5,7 @@ import { colors } from "../components/colors";
 import SmallText from "../components/Texts/SmallText";
 import Icon from "react-native-vector-icons/Ionicons";
 
+
 const { primary, goldish, black, secondary2 } = colors;
 
 const data = [

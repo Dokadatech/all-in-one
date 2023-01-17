@@ -1,10 +1,14 @@
-import { View, Text, FlatList, StyleSheet, SafeAreaView } from "react-native";
-import React from "react";
+import { View, Text, FlatList, StyleSheet, SafeAreaView, Platform } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
 import RegularText from "../components/Texts/RegularText";
 import { colors } from "../components/colors";
-import SmallText from "../components/Texts/SmallText";
 import Icon from "react-native-vector-icons/Ionicons";
 import { ScreenHeight } from "../components/Shared";
+import * as Notifications from 'expo-notifications';
+import storage from '@react-native-async-storage/async-storage';
+import Constants from "expo-constants";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
 
 const { primary, secondary, lightGrey, goldish, white, black, secondary2 } =
   colors;
@@ -91,7 +95,80 @@ const Item = ({ title }) => (
     </Text>
   </View>
 );
-const Notifications = () => {
+
+Notifications.setNotificationHandler ({
+  handleNotification: async () => ({
+    shouldShowAlert: true, 
+    shouldPlaySound: true, 
+    shouldSetBadge: true
+  })
+});
+
+const Notification = () => {
+  const [notifcation, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  let not = "";
+
+  useEffect(() => {
+    const getPermission = async () => {
+      if (Constants.isDevice) {
+        const {status: existingStatus} = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus; 
+        if(existingStatus !== 'granted') {
+          const {status} = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted'){
+          alert('Enable push notifications to use the app!');
+          await storage.setItem('expopushtoken', "");
+          return;
+        }
+        const token = (await Notifications.getExpoPushTokenAsync()).data;
+        await storage.setItem('expopushtoken', token);
+      }else {
+        alert('Must use physical device for Push Notifications');
+      }
+  
+      if (Platform.OS === 'android'){
+        Notifications.setNotificationChannelAsync('default', {
+          name: 'default', 
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#FF231F7C',
+        });
+      }
+    }
+    getPermission();
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notifcation => {
+      setNotification(notifcation);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(respone => {});
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, 
+  []);
+
+  const OnClick = () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "All In One", 
+        body: "Three days away from your next payday",
+        data: {data: "data goes here"}
+      }, 
+      trigger: { 
+        seconds: 9
+      }
+    });
+  }
+
   const renderItem = ({ item }) => <Item title={item.title} />;
   return (
     <SafeAreaView>
@@ -117,12 +194,14 @@ const Notifications = () => {
         </RegularText>
 
         <View style={styles.container}>
+          <TouchableOpacity onPress={OnClick}>
           <FlatList
             data={DATA}
             // extraData={selectedId}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
           />
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -153,4 +232,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Notifications;
+export default Notification;

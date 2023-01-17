@@ -8,6 +8,36 @@ import RegularText from "../components/Texts/RegularText";
 import { colors } from "../components/colors";
 import SmallText from "../components/Texts/SmallText";
 import UserAvatar from "react-native-user-avatar";
+// import Realm from "realm";
+
+
+// export const USERLIST_SCHEMA = "UserList";
+// export const USER_SCHEMA = "User";
+
+
+// export const UserScheme = {
+//     name: USER_SCHEMA,
+//     primaryKey: "id",
+//     properties: {
+//       id: 'int',
+//       firstName: {type: 'string', indexed: true},
+//       lastName: {type: 'string', indexed: true},
+//       address: {type: 'string', default: false},
+//       jobDescription: {type: 'string', default: false}
+//     }
+// };
+
+// export const queryUsers = () => new Promise((resolve, reject) => {
+//   Realm.open(databaseOptions).then(realm =>{
+//     let userList = realm.objects(USER_SCHEMA);
+//     resolve.userList;
+//   }).catch((error) => {
+//     reject(error);
+//   })
+// })
+
+
+
 
 const { primary, secondary, secondary2, lightGrey, goldish, white, black } =
   colors;

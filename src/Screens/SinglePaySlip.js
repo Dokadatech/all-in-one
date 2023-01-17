@@ -45,7 +45,7 @@ const SinglePaySlip = ({ navigation }) => {
       <h1>PayStub Details</h1>
       <address>
         <p>${"" + data.name}</p>
-        <p>${"" + data.address}</p>s
+        <p>${"" + data.address}</p>
         <p>${"" + data.phone}</p>
         <p>${"" + data.rate}</p>
         <p>${"" + data.payFrequency}</p>
@@ -151,8 +151,7 @@ const SinglePaySlip = ({ navigation }) => {
       <h1><span>Contact Info.</span></h1>
       <div>
         <p>Metro Security Solutions Company Limited</p>
-        <p>V.B. Munnings Building,</p>
-        <p>Horse Shoe Drive,</p>
+        <p>V.B. Munnings Building, Horse Shoe Drive</p>
         <p>New Providence, Nassau Bahamas</p>
         <p>242-356-5311</p>
       </div>
