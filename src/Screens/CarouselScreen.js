@@ -43,13 +43,15 @@ const CarouselScreen = ({ navigation }) => {
 
             console.log("current index:", index, day);
           }}
-          renderItem={({}) => (
+          renderItem={({ index }) => (
             <View
               style={{
                 borderWidth: 3,
                 justifyContent: "center",
               }}
-            ></View>
+            >
+              <Text>{index}</Text>
+            </View>
           )}
         />
         {/* <Vacation width={200} height={200} /> */}

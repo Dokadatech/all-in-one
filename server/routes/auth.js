@@ -17,10 +17,10 @@ authRouter.get("/", auth, async (req, res) => {
     const employee = await Employee.findById(req.employee.id).select(
       "-password"
     );
-    res.json(employee);
+    res.json({ status: "SUCCESS", employee });
   } catch (error) {
     console.error(error.message);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ status: "FAILED", message: "Server error" });
   }
 });
 
@@ -39,21 +39,32 @@ authRouter.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    console.log(email, password);
-
+    if (email == "" || password == "") {
+      res.json({
+        status: "FAILED",
+        message: "Empty Credentials supplied",
+      });
+    }
     try {
       let employee = await Employee.findOne({ email });
+      let data;
       if (!employee) {
-        return res.status(400).json({ message: "Invalid Credentials" });
+        return res
+          .status(400)
+          .json({ status: "FAILED", message: "Invalid Credentials" });
       }
       const isMatch = await bcrypt.compare(password, employee.password);
       if (!isMatch) {
-        return res.status(400).json({ message: "Invalid Credentials" });
+        console.log("this is false here ");
+        return res
+          .status(400)
+          .json({ status: "FAILED", message: "Invalid Credentials" });
       }
 
       const payload = {
         employee: {
           id: employee.id,
+          data: employee.data,
         },
       };
 
@@ -64,9 +75,16 @@ authRouter.post(
           //Todo change to 3600 in production
           expiresIn: 360000,
         },
-        (error, token) => {
-          if (error) throw error;
-          res.json({ token });
+        (error, token, data) => {
+          if (error) {
+            res.json({ status: "FAILED", message: "Token Error" });
+          }
+          res.json({
+            status: "SUCCESS",
+            token,
+            message: "Login Successful",
+            data,
+          });
         }
       );
     } catch (error) {
@@ -75,40 +93,5 @@ authRouter.post(
     }
   }
 );
-
-// authRouter.post("/login", [
-//   check("email").isEmail().withMessage("Enter a valid email address"),
-//   check("password").not().isEmpty(),
-// ]);
-
-//EMAIL Verification
-// authRouter.get("/verify/:token", Auth.verify);
-// authRouter.post("/resend", Auth.resendToken);
-
-//Password RESET
-// authRouter.post(
-//   "/recover",
-//   [check("email").isEmail().withMessage("Enter a valid email address")]
-//   // validate,
-//   // Password.recover
-// );
-
-// authRouter.get("/reset/:token", Password.reset);
-
-// authRouter.post(
-//   "/reset/:token",
-//   [
-//     check("password")
-//       .not()
-//       .isEmpty()
-//       .isLength({ min: 6 })
-//       .withMessage("Must be at least 6 chars long"),
-//     check("confirmPassword", "Passwords do not match").custom(
-//       (value, { req }) => value === req.body.password
-//     ),
-//   ]
-//   // validate,
-//   // Password.resetPassword
-// );
 
 module.exports = authRouter;

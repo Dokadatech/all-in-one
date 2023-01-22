@@ -19,7 +19,7 @@ router.post(
   body("email", "Please include a valid email address")
     .isEmail()
     .normalizeEmail(),
-  body("password", "Please enter a with 8 or more characters ")
+  body("password", "Please enter a password with 8 or more characters ")
     .isLength({
       min: 8,
     })

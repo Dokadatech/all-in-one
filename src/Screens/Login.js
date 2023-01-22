@@ -11,12 +11,10 @@ import { colors } from "../components/colors";
 import StyledInput from "../components/Inputs/StyledInput";
 import { Formik } from "formik";
 import MainBtn from "../components/Buttons/MainBtn";
-import Home from "./Home";
-import ForgotPassword from "./ForgotPassword";
 import OutputMsg from "../components/Texts/OutputMsg";
 import AccountText from "../components/Texts/AccoutText";
 import axios from "axios";
-const { primary, secondary, lightGrey, goldish, white } = colors;
+const { primary, secondary, lightGrey } = colors;
 
 const StyledView = styled.View`
   flex: 1;
@@ -30,81 +28,64 @@ const StyledView = styled.View`
 `;
 
 const Login = ({ navigation }) => {
-  const [msg, setMsg] = useState("");
-  const [isSuccess, setSuccess] = useState(false);
+  const [msg, setMsg] = useState();
+
+  const [messageType, setMessageType] = useState();
 
   // const handleLogin = async (credentials, setSubmitting) => {
-  //   const url = "/api/auth/login";
+  //   setMsg(null);
+  //   const url = "http://localhost:3000/api/auth";
   //   try {
-  //     setMsg(null);
-  //     call to backend
-  //     axios.post(url);
-  //     const result = res.data;
-  //     const { token } = result;
-  //      if login successful move to next page
-  //     if (!token) {
-  //       setMsg("Error logging in");
+  //     const response = await axios.post(url, credentials);
+  //     const result = response.data;
+  //     console.log(result);
+  //     const { status, token, message } = result;
+  //     if (status !== "SUCCESS") {
+  //       handleMessage("Invalid Credentials", status);
+  //       console.log(message);
   //     } else {
-  //       navigation.navigate("Home", token);
+  //       navigation.navigate("Home", { token });
+  //       console.log(`Login successfull `);
   //     }
-  //      after everything set submitting to false
-  //     setSubmitting(false);
+  //     // setSubmitting(false);
   //   } catch (error) {
-  //     setMsg("Login Failed");
   //     setSubmitting(false);
-  //     console.log(`login failed here ${error} `);
+  //     // handleMessage(error.message);
+  //     console.log("Login failed: " + error.message);
   //   }
   // };
 
-  // const handleLogin = (credentials, setSubmitting) => {
-  //   handleMessage(null);
-  //   const url = "http://localhost:5000/user/signin";
-
-  //   axios
-  //     .post(url, credentials)
-  //     .then((response) => {
-  //       const result = response.data;
-  //       const { status, message, data } = result;
-  //       if (status !== "SUCCESS") {
-  //         handleMessage(message, status);
-  //         return console.log(`User error here ${data}`);
-  //       } else {
-  //         navigation.navigate("Profiles", { ...data });
-  //         console.log(`Login successfull ${data}`);
-  //       }
-  //       setSubmitting(false);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.message);
-  //       setSubmitting(false);
-  //       handleMessage("An error occured, Refresh and try again");
-  //     });
-  // };
-
-  const handleLogin = async (credentials, setSubmitting) => {
-    const url = "http://localhost:3000/api/auth/login";
-    try {
-      setMsg(null);
-      const response = await axios.post(url, credentials);
-      const result = response.data;
-
-      const { reply, message, data, token } = result;
-      // console.log(token);
-      if (!token) {
-        // setMsg(message);
-        navigation.navigate("Home");
-        console.log(token);
-        return console.log(`User error here ${message}`);
-      } else {
-        navigation.navigate("Home");
-        // console.log(`Login successfull ${message}`);
-      }
-      setSubmitting(false);
-    } catch (error) {
-      setMsg("Login failed: " + error.message);
-      console.log("Login failed: " + error.message);
-      setSubmitting(false);
-    }
+  const handleLogin = (credentials, setSubmitting) => {
+    handleMessage(null);
+    const url = "http://localhost:3000/api/auth";
+    axios
+      .post(url, credentials)
+      .then((response) => {
+        const result = response.data;
+        const { status, message, token } = result;
+        console.log(result);
+        if (status !== "SUCCESS") {
+          handleMessage(message, status);
+          console.log("ERROR HERE!");
+          handleMessage("Invalid Credentials, Please try again", status);
+        } else {
+          navigation.navigate("Home", { token });
+          console.log(`Login successfull `);
+        }
+        setSubmitting(false);
+      })
+      .catch((err) => {
+        handleMessage("An error occured, Refresh and try again: ", err.message);
+        // console.log(err.message);
+        setSubmitting(false);
+      });
+  };
+  /***
+   * This method handles the error or success messages
+   */
+  const handleMessage = (message, type = "FAILED") => {
+    setMsg(message);
+    setMessageType(type);
   };
 
   return (
@@ -129,10 +110,12 @@ const Login = ({ navigation }) => {
             initialValues={{ email: "", password: "" }}
             onSubmit={(values, { setSubmitting }) => {
               if (values.email == "" || values.password == "") {
-                setMsg("Missing information");
+                setMsg("Please enter a valid email and password");
                 setSubmitting(false);
               } else {
+                navigation.navigate("Home");
                 handleLogin(values, setSubmitting);
+
                 values.email = "";
                 values.password = "";
               }
@@ -170,26 +153,23 @@ const Login = ({ navigation }) => {
                   Forgot Password?
                 </AccountText>
 
-                <OutputMsg style={{ marginTop: 50 }} success={isSuccess}>
-                  {msg || ""}
+                <OutputMsg style={{ marginTop: 5 }} type={messageType}>
+                  {msg}
                 </OutputMsg>
 
                 {!isSubmitting && (
-                  <MainBtn
-                    onPress={() => navigation.navigate("Home")}
-                    style={{ marginTop: 20 }}
-                  >
-                    Sign In
+                  <MainBtn onPress={handleSubmit} style={{ marginTop: 20 }}>
+                    Login
                   </MainBtn>
                 )}
 
                 {isSubmitting && (
-                  <MainBtn
-                    onPress={() => navigation.navigate("Contact")}
-                    style={{ marginTop: 60 }}
-                    disabled={true}
-                  >
-                    <ActivityIndicator size="small" color={primary} />
+                  <MainBtn style={{ marginTop: 60 }} disabled={true}>
+                    <ActivityIndicator
+                      size="small"
+                      color={primary}
+                      style={{ alignItems: "flex-end" }}
+                    />
                   </MainBtn>
                 )}
                 <SmallText

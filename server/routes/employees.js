@@ -13,20 +13,17 @@ const { isAdmin } = require("../middlewares/authAdmin");
  * This routes gets all employees
  *private routes
  * */
-router.get("/", (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    Employee.find((err, doc) => {
-      if (err) {
-        res.send("error getting users from database");
-        console.log("error getting users from database");
-      } else {
-        console.log("users found in database database");
-        res.send("All employees");
-      }
+    const employees = await Employee.find({ employee: req.employee.id }).sort({
+      date: -1,
     });
+
+    console.log("users found in database database");
+    res.json({ status: "SUCCESS", employees });
   } catch (error) {
-    res.send("error getting users from database");
-    console.log("error getting users from database");
+    res.status(500).send("error getting users from database");
+    console.error(error.message);
   }
 });
 
@@ -83,7 +80,9 @@ router.post("/create", isAdmin, async (req, res) => {
     let newEmployee = await Employee.findOne({ email });
 
     if (newEmployee) {
-      return res.status(400).json({ message: "Employee already exists" });
+      return res
+        .status(400)
+        .json({ status: "FAILED", message: "Employee already exists" });
     }
     newEmployee = Employee({
       firstName,
@@ -125,7 +124,7 @@ router.post("/create", isAdmin, async (req, res) => {
       },
       (error, token) => {
         if (error) throw error;
-        res.json({ token });
+        res.json({ status: "SUCCESS", token });
       }
     );
   } catch (error) {
@@ -139,7 +138,7 @@ router.post("/create", isAdmin, async (req, res) => {
  * This route gets a single employee by id and updates the employee
  *Todo add only admin protection here
  * */
-router.put("/:id", (req, res) => {
+router.put("/:id", auth, (req, res) => {
   try {
     if (ObjectId.isValid(req.params.id)) {
       let updateEmployee = {
@@ -162,10 +161,20 @@ router.put("/:id", (req, res) => {
         { new: true },
         (err, doc) => {
           if (err) {
-            res.send("error updating user in database");
+            res
+              .send("error updating user in database")
+              .json({
+                status: "FAILED",
+                message: "There was an error updating the user",
+              });
             console.log("error updating user in database");
           } else {
-            res.send(doc);
+            res
+              .send(doc)
+              .json({
+                status: "SUCCESS",
+                message: "User information has been updated",
+              });
             console.log("user info updated in database database");
           }
         }
@@ -173,12 +182,14 @@ router.put("/:id", (req, res) => {
     } else {
       return res
         .status(400)
-        .send(`No records found with ID number '${req.params.id}'`);
+        .send(`No records found with ID number '${req.params.id}'`)
+        .json({ status: "FAILED", message: "No records found" });
     }
   } catch (error) {
     return res
       .status(400)
-      .send(`No records found with ID number '${req.params.id}'`);
+      .send(`No records found with ID number '${req.params.id}'`)
+      .json({ status: "FAILED", message: "No records found" });
   }
 });
 
@@ -186,21 +197,26 @@ router.put("/:id", (req, res) => {
  * This routes get a single employee by id and deletes the employee
  *Todo add only admin protection here
  * */
-router.delete("/:id", (req, res) => {
+router.delete("/:id", auth, (req, res) => {
   if (ObjectId.isValid(req.params.id)) {
     Employee.findByIdAndRemove(req.params.id, (err, doc) => {
       if (err) {
-        res.send("error removing users from database");
+        res
+          .send("error removing users from database")
+          .json({ status: "FAILED", message: "Error removing user" });
         console.log("error removing user from database");
       } else {
-        res.send(doc);
+        res
+          .send(doc)
+          .json({ status: "SUCCESS", message: "User has been removed" });
         console.log("user removed from database database");
       }
     });
   } else {
     return res
       .status(400)
-      .send(`No records found with ID number '${req.params.id}'`);
+      .send(`No records found with ID number '${req.params.id}'`)
+      .json({ status: "FAILED", messgae: "User not found" });
   }
 });
 module.exports = router;

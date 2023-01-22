@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
-module.exports = function (req, res, next) {
-  const token = req.header("x-auth-token");
+const tokenVerification = (req, res, next) => {
+  const token = req.body.token || req.query.token || req.header("x-auth-token");
 
   if (!token) {
     return res.status(401).json({ message: "Auth Denied" });
@@ -16,3 +16,5 @@ module.exports = function (req, res, next) {
     res.status(401).json({ message: "Invalid token" });
   }
 };
+
+module.exports = tokenVerification;

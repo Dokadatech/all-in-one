@@ -25,9 +25,22 @@ const { primary, white, goldish, secondary2, secondary, black, lightGrey } =
   colors;
 
 const CreateEmp = () => {
+  const {
+    sickDays,
+    setSickDays,
+    grievenceDays,
+    setGrievenceDays,
+    vacayDays,
+    setVacayDays,
+    gender,
+    setGender,
+    department,
+    setDepartment,
+  } = useContext(GlobalStates);
   const [reasonInput, setReasonInput] = useState();
   const [isEnabled, setIsEnabled] = useState(false);
   const { workLocation, setWorkLocation } = useContext(GlobalStates);
+  const [workescription, setWorkDescription] = useState("");
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ backgroundColor: primary, zIndex: 1 }}>
@@ -38,7 +51,7 @@ const CreateEmp = () => {
               position: "relative",
               backgroundColor: primary,
               marginHorizontal: 10,
-              top: 20,
+              top: 10,
             },
             textInput: { fontSize: 18 },
           }}
@@ -50,8 +63,9 @@ const CreateEmp = () => {
           debounce={400}
           onPress={(data, details = null) => {
             // 'details' is provided when fetchDetails = true
-            // console.log(data.place_id);
+            console.log(data.description);
             setWorkLocation(data.place_id);
+            setWorkDescription(data.description);
           }}
           query={{
             key: "AIzaSyDrt1sIUQyyTQ-Fb889zUsDzH2askT2rvQ",
@@ -70,6 +84,18 @@ const CreateEmp = () => {
             borderBottomLeftRadius: 40,
           }}
         >
+          <Text
+            style={{
+              position: "absolute",
+              top: 15,
+              textAlign: "center",
+              display: "flex",
+              width: "100%",
+              color: white,
+            }}
+          >
+            {workescription}
+          </Text>
           <View
             style={{
               position: "relative",
@@ -90,7 +116,6 @@ const CreateEmp = () => {
               ]}
             >
               <TextInput style={styles.input} placeholder="First Name" />
-
               <TextInput style={styles.input} placeholder="Last Name" />
               <TextInput style={styles.input} placeholder="Email" />
               <TextInput style={styles.input} placeholder="Password" />
@@ -100,11 +125,31 @@ const CreateEmp = () => {
                 placeholder="Payrate"
                 keyboardType="numeric"
               />
+              <TextInput
+                style={styles.input}
+                placeholder="NIB deductions"
+                keyboardType="numeric"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Vacation days"
+                keyboardType="numeric"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Sick days"
+                keyboardType="numeric"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Grievence days"
+                keyboardType="numeric"
+              />
             </View>
             <RegularText
               style={{ color: white, position: "relative", marginLeft: 15 }}
             >
-              Check the box below if the new employee is an admin.
+              Check the box below if the new user is an admin.
             </RegularText>
             <View
               style={{
@@ -166,7 +211,7 @@ const CreateEmp = () => {
               textAlign: "left",
             }}
           >
-            Create User
+            Create
           </BigText>
         </MainBtn>
       </KeyboardAvoid>

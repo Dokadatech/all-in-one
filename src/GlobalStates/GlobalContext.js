@@ -20,8 +20,13 @@ const GlobalProvider = ({ children }) => {
   const [date, setDate] = useState(moment().format("MMMM Do, YYYY"));
   const [sickDays, setSickDays] = useState("05");
   const [vacayDays, setVacayDays] = useState("10");
+  const [grievenceDays, setGrievenceDays] = useState();
   const [ClockedIn, setClockedIn] = useState(false);
-  // const [location, setLocation] = useState(null)
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [employeeNIBDeduuction, setEmployeeNIBDeduction] = useState();
+  const [NIBDeductionEmployer, setNIBDeductionEmployer] = useState();
+  const [gender, setGender] = useState();
+
   return (
     <GlobalStates.Provider
       value={{
@@ -59,8 +64,18 @@ const GlobalProvider = ({ children }) => {
         setSickDays,
         vacayDays,
         setVacayDays,
+        grievenceDays,
+        setGrievenceDays,
         ClockedIn,
         setClockedIn,
+        employeeNIBDeduuction,
+        setEmployeeNIBDeduction,
+        NIBDeductionEmployer,
+        setNIBDeductionEmployer,
+        isAdmin,
+        setIsAdmin,
+        gender,
+        setGender,
       }}
     >
       {children}

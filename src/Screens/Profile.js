@@ -40,9 +40,6 @@ const Profiles = () => {
         <Text style={{ fontSize: 25, fontWeight: "bold", padding: 10 }}>
           Bethell Enterprise LTD
         </Text>
-        <Text style={{ fontSize: 15, fontWeight: "bold", color: primary }}>
-          23, Male
-        </Text>
       </View>
       <View
         style={{
