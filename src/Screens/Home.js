@@ -12,11 +12,18 @@ import IconM from "react-native-vector-icons/MaterialIcons";
 import { Card, Title, Paragraph } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { GlobalStates } from "../GlobalStates/GlobalContext";
+import Announcements from "../components/svg/Announcements.svg";
+import Request from "../components/svg/Request.svg";
+
+
+
+const today = new Date();
+today.setDate(today.getDate() + 9);
+const payDay = new Date(today).toLocaleDateString("en-US" , {month: "short", day: "2-digit"}) + (" ") + ("is your next Pay Day!");
 
 const {
   primary,
   secondary,
-
   goldish,
   white,
 } = colors;
@@ -26,6 +33,7 @@ const StyledView = styled.View`
   width: 100%;
   background-color: ${primary};
   border-radius: 55px;
+  marginTop: 5%;
 `;
 
 const Home = ({ navigation }) => {
@@ -94,6 +102,7 @@ const Home = ({ navigation }) => {
           position: "absolute",
           left: 20,
           fontSize: 33,
+          top: -10,
           letterSpacing: 1,
         }}
       >
@@ -102,13 +111,32 @@ const Home = ({ navigation }) => {
       <SmallText
         style={{
           color: secondary,
-          top: 50,
+          top: 30,
           position: "absolute",
           left: 25,
         }}
       >
         {date}
       </SmallText>
+      <View
+        style={{
+          color: primary,
+          top: 80,
+          position: "absolute",
+          left: 25,
+          borderColor: primary,
+        }}>
+        <SmallText
+          style={{
+            color: secondary,
+            top: -30,
+            marginLeft: -26,
+            position: "absolute",
+            left: 25,
+          }}>
+          {payDay}
+        </SmallText>
+      </View>
       <StyledView>
         <View
           style={{
@@ -246,10 +274,10 @@ const Home = ({ navigation }) => {
             }}
             style={{
               position: "relative",
-              marginTop: 200,
+              marginTop: 140,
               height: 80,
               display: "flex",
-              left: 12,
+              left: -13,
             }}
           >
             <BigText
@@ -279,7 +307,8 @@ const Home = ({ navigation }) => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Card style={{ height: 300, width: "100%" }}>
-                  <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+                  <Announcements style={{height: 180, width: 180, marginLeft: 80, color: primary}}></Announcements>
+                  {/* <Card.Cover source={{ uri: "https://picsum.photos/700" }} /> */}
                   <Card.Content
                     style={{
                       display: "flex",
@@ -287,6 +316,7 @@ const Home = ({ navigation }) => {
                       alignItems: "center",
                     }}
                   >
+                   {/* <Announcement style={{height: 80, width: 80}}></Announcement>  */}
                     <Title>Card Announcements</Title>
                     <Paragraph>Card content</Paragraph>
                   </Card.Content>
@@ -315,7 +345,8 @@ const Home = ({ navigation }) => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Card style={{ height: 300, width: "100%" }}>
-                  <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+                <Request style={{height: 180, width: 180, marginLeft: 80, color: primary}}></Request>
+                  {/* <Card.Cover source={{ uri: "https://picsum.photos/700" }} /> */}
                   <Card.Content
                     style={{
                       display: "flex",

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "all-in-one",
-    "slug": "all-in-one",
+    "name": "All In One",
+    "slug": "All In One",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,18 +14,27 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#4FC6F0"
-      }
+      },
+      "package": "com.angelo30296.allinone"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9021be88-704f-4d49-a743-2b742719fdcb"
+      }
     }
   }
 }

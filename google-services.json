@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "935494620575",
+    "project_id": "allinone-4c1cf",
+    "storage_bucket": "allinone-4c1cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:935494620575:android:9fb4e5c3e9a7a839a559aa",
+        "android_client_info": {
+          "package_name": "com.angelo30296.allinone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "935494620575-5365aoho1sj7hjri7mtqlb63ri3jib4d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.angelo30296.allinone",
+            "certificate_hash": "596dbe115d64ab557242359e769c8652834aa56a"
+          }
+        },
+        {
+          "client_id": "935494620575-8eerab2s3ta7ccugrh8v2o9opepnjco4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.angelo30296.allinone",
+            "certificate_hash": "b9080f0e4061fae5e67b2dbfc4279df2aa4864dc"
+          }
+        },
+        {
+          "client_id": "935494620575-a8tr1pt3nejm2q83iigobacgc01ie48l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcrVQYK-oaSQyo4Z8I2n-q5K4bx3Gqjns"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "935494620575-a8tr1pt3nejm2q83iigobacgc01ie48l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
